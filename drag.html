@@ -1,0 +1,88 @@
+ <html>
+ <head>
+ 	<title></title>
+ 	<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+ </head>
+ <body>
+ 	<table id='table' class="table table-hover table-striped">
+					<thead>
+					    <tr class="nodrop nodrag">
+					  	<th>ID</th>
+					  	<th>产品名称</th>
+					  	</tr>
+					</thead>
+					<tbody>
+						<tr id="01">
+							<td>01</td>
+							<td id="sort_01">登月小英雄</td>
+						</tr>
+						<tr id="02">
+							<td>02</td>
+							<td id="sort_02">宝宝认时钟</td>
+						</tr>
+						<tr id="03">
+							<td>03</td>
+							<td id="sort_03">宝宝贴贴纸</td>
+						</tr>
+					</tbody>
+	</table>				
+ 	
+ 	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+ 	<script type="text/javascript" src="jquery.tablednd.js"></script>
+ 	<script type="text/javascript">
+ 	// 	function sort(id){
+		//     if(id){
+		//         var sort = $('#sort_'+id).val();
+		//         $.post("{:U("AdPost/sort")}",{"id":id,"sort":sort},function(data){
+		//    				if(data.status){
+		//    					window.location.reload();
+		//    				}else{
+		//    					alert("数据操作异常");
+		//    					return false;
+		//    				}
+		//         },'json')
+		//     }
+		// }
+
+	 //拖拽 
+	 $(document).ready(function() {
+	            $("#table").tableDnD({
+	                //当拖动排序完成后
+	                onDrop: function() {
+	                    //获取id为table的元素
+	                    var table = document.getElementById("table");
+						
+						$('tr').each(function(){
+							$(this).mousedown(function(){
+								//获取当前行的行号
+								var cur_tr=$(this).index();
+								//获取当前点击行的第一列的文本,即产品的id值
+								var cur_id=$(this).find('td:first').text();
+								//获取排序值
+								var sort_value=$(this).find('td').eq(2).attr("id");
+								//当鼠标松开后，即拖放完成后，将id传递
+								$.post("url",{"id":cur_id,"sort":sort_value},function(data){
+									if(data.status){
+										return true;
+									}else{
+										alert("数据操作异常！");
+										return false;
+									}
+								},'json')
+
+							});
+							$(this).mouseup(function(){
+								//获取id值
+								var cur_id=$(this).find('td:first').text();
+							
+							});
+						});
+	                }
+	            });
+	        });
+ 	</script>
+ </body>
+ </html>
+
+
+ 
